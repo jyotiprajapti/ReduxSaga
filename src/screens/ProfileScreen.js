@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, ImageBackground, StyleSheet } from 'react-native';
+import { View, Text, Button, ImageBackground, StyleSheet, PermissionsAndroid } from 'react-native';
 import { useSelector } from 'react-redux';
 import RNFS from 'react-native-fs';
 import { request, PERMISSIONS } from 'react-native-permissions';
@@ -14,8 +14,29 @@ const ProfileScreen = ({ route, navigation }) => {
   const selectedUser = users.find((u) => u.login.uuid === user.login.uuid);
 
   const checkPdfPermission = async () => {
-    const permissionStatus = await request(PERMISSIONS.ANDROID.WRITE_EXTERNAL_STORAGE);
-    setPdfPermission(permissionStatus);
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: 'Storage Permission',
+          message: 'This app needs access to your storage for PDF download.',
+          buttonPositive: 'Allow',
+          buttonNegative: 'Deny',
+        }
+      );
+    
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('Write external storage permission granted');
+        setPdfPermission('granted');
+      } else {
+        console.log('Write external storage permission denied');
+        setPdfPermission('denied');
+      }
+    } catch (error) {
+      console.error('Error requesting permission:', error);
+      setPdfPermission('denied'); // Handle errors by assuming permission is denied
+    }
+    
   };
 
   const generatePDF = async () => {
