@@ -65,7 +65,16 @@ margin: moderateScale(20),
     fontSize: moderateScale(20),
     fontWeight: 'bold'
   },
-  age:{height: horizontalScale(40),width:verticalScale(40), backgroundColor: 'pink', textAlign:"center",textAlignVertical:'center', }
+  age:{
+    height: horizontalScale(40),
+    width: verticalScale(40),
+    backgroundColor: 'pink',
+    textAlign: 'center',
+    textAlignVertical: 'center',
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+   }
 })
 
 export default ProfileScreen;
