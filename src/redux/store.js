@@ -1,12 +1,7 @@
-import { createStore, applyMiddleware } from 'redux';
-import createSagaMiddleware from 'redux-saga';
-import rootReducer from './reducers';
-import { watchFetchUsers } from './sagas';
+import {createStore} from 'redux'
+import rootReducer from './rootReducer';
+import { configureStore } from '@reduxjs/toolkit';
 
-const sagaMiddleware = createSagaMiddleware();
-
-const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
-
-sagaMiddleware.run(watchFetchUsers);
-
+// const store = createStore(rootReducer);
+const store = configureStore({reducer: rootReducer})
 export default store;
